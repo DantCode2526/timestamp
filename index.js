@@ -24,24 +24,23 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.get("/api/:date?", function (req, res) {
-    let dateStr = req.params.date;
-
+    const dateStr = req.params.date;
     let date;
 
-    // Si no se proporciona una fecha, usamos la fecha actual
     if (!dateStr) {
+        // Si no se proporciona una fecha, usa la fecha actual
         date = new Date();
     } else if (!isNaN(parseInt(dateStr))) {
         // Si el parámetro es un número (timestamp Unix en milisegundos)
         date = new Date(parseInt(dateStr));
     } else {
-        // Si el parámetro es una cadena de fecha en un formato que puede parsearse
+        // Intenta parsear el parámetro como una fecha
         date = new Date(dateStr);
     }
 
     // Verifica si la fecha es válida
     if (isNaN(date.getTime())) {
-        return res.status(400).json({ error: "Invalid Date" });
+        return res.json({ error: "Invalid Date" });
     }
 
     // Prepara la respuesta
